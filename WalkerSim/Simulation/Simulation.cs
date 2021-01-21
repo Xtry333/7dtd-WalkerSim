@@ -1034,19 +1034,20 @@ namespace WalkerSim
             if (now < _nextBroadcast)
                 return;
 
-            // Broadcast only with 20hz.
-            _nextBroadcast = now.AddMilliseconds(1.0f / 20.0f);
+            // Broadcast only with 20hz. // Override 4Hz
+            _nextBroadcast = now.AddMilliseconds(1.0f / 4.0f);
 
             try
             {
-                Viewer.MapData data = new Viewer.MapData();
-                data.w = 512;
-                data.h = 512;
-                data.mapW = Utils.Distance(_worldMins.x, _worldMaxs.x);
-                data.mapH = Utils.Distance(_worldMins.z, _worldMaxs.z);
-                data.density = _config.PopulationDensity;
-                data.zombieSpeed = _worldState.GetZombieSpeed();
-                data.timescale = _timeScale;
+                Viewer.MapData data = new Viewer.MapData {
+                    w = 512,
+                    h = 512,
+                    mapW = Utils.Distance(_worldMins.x, _worldMaxs.x),
+                    mapH = Utils.Distance(_worldMins.z, _worldMaxs.z),
+                    density = _config.PopulationDensity,
+                    zombieSpeed = _worldState.GetZombieSpeed(),
+                    timescale = _timeScale
+                };
 
                 lock (_lock)
                 {

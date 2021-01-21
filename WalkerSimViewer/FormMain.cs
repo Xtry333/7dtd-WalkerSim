@@ -14,6 +14,9 @@ namespace WalkerSim
 {
     public partial class FormMain : Form
     {
+        private static readonly int ZOMBIE_SIZE = 3;
+        private static readonly float SCALE = 1.5f;
+
         private System.Windows.Forms.Timer _timer = new System.Windows.Forms.Timer();
         private ViewerClient _client = new ViewerClient();
 
@@ -28,7 +31,7 @@ namespace WalkerSim
 
         int Scale(int v)
         {
-            return (int)((float)v * 1.5);
+            return (int)Math.Round(v * SCALE);
         }
 
         Bitmap GetBitmap(Viewer.MapData mapData)
@@ -65,7 +68,7 @@ namespace WalkerSim
                 {
                     foreach (var zombie in mapData.inactive)
                     {
-                        gr.FillEllipse(Brushes.Red, Scale(zombie.x), Scale(zombie.y), 2, 2);
+                        gr.FillEllipse(Brushes.Red, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
                     }
                 }
 
@@ -74,7 +77,7 @@ namespace WalkerSim
                 {
                     foreach (var zombie in mapData.active)
                     {
-                        gr.FillEllipse(Brushes.Blue, Scale(zombie.x), Scale(zombie.y), 2, 2);
+                        gr.FillEllipse(Brushes.Blue, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
                     }
                 }
 
