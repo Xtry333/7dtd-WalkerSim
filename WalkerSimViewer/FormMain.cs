@@ -14,7 +14,7 @@ namespace WalkerSim
 {
     public partial class FormMain : Form
     {
-        private static readonly int ZOMBIE_SIZE = 3;
+        private static readonly int ZOMBIE_SIZE = 1;
         private static readonly float SCALE = 1.5f;
 
         private System.Windows.Forms.Timer _timer = new System.Windows.Forms.Timer();
@@ -68,16 +68,18 @@ namespace WalkerSim
                 {
                     foreach (var zombie in mapData.inactive)
                     {
-                        gr.FillEllipse(Brushes.Red, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
+                        gr.FillRectangle(Brushes.Red, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
+                        // gr.FillEllipse(Brushes.Red, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
                     }
                 }
 
                 // Active
                 if (chkActive.Checked)
                 {
-                    foreach (var zombie in mapData.active)
+                    foreach (var zombie in mapData.active) 
                     {
-                        gr.FillEllipse(Brushes.Blue, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
+                        gr.FillRectangle(Brushes.Blue, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
+                        // gr.FillEllipse(Brushes.Blue, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
                     }
                 }
 
