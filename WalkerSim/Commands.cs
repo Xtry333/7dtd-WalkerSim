@@ -19,8 +19,11 @@ namespace WalkerSim
 				if (sim == null)
 					return;
 
-				switch (_params[0])
-				{
+				switch (_params[0]) {
+					case "help":
+						Log.Out(" reset => Clear and repopulate simulation");
+						Log.Out(" timescale => Change timescale of simulation");
+						break;
 					case "reset":
 						sim.Reset();
 						break;
