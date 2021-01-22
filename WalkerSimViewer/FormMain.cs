@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using System.IO;
 
 namespace WalkerSim
 {
@@ -68,7 +69,7 @@ namespace WalkerSim
                 {
                     foreach (var zombie in mapData.inactive)
                     {
-                        gr.FillRectangle(Brushes.Red, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
+                        gr.FillRectangle(Brushes.White, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
                         // gr.FillEllipse(Brushes.Red, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
                     }
                 }
@@ -78,7 +79,7 @@ namespace WalkerSim
                 {
                     foreach (var zombie in mapData.active) 
                     {
-                        gr.FillRectangle(Brushes.Blue, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
+                        gr.FillRectangle(Brushes.Red, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
                         // gr.FillEllipse(Brushes.Blue, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
                     }
                 }
@@ -182,10 +183,14 @@ namespace WalkerSim
                         MessageBox.Show("Invalid remote host, format is: ip:port");
                         return;
                     }
+                    
                     string host = args[0];
                     int port = int.Parse(args[1]);
 
-                    _client.Connect(host, port);
+                    bool connected = _client.Connect(host, port);
+                    if (connected) {
+                        SaveLastIP(host, port);
+                    }
                 }
                 catch (Exception)
                 {
@@ -197,6 +202,18 @@ namespace WalkerSim
             {
                 _client.Disconnect();
                 btConnect.Text = "Connect";
+            }
+        }
+
+        private void SaveLastIP(string host, int port) {
+            File.WriteAllText("lastip", $"{host}:{port}");
+        }
+
+        private void OnFormLoad(object sender, EventArgs e) {
+            try {
+                txtRemote.Text = File.ReadAllText("lastip");
+            } catch {
+                return;
             }
         }
     }
