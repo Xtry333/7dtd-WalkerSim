@@ -69,7 +69,7 @@ namespace WalkerSim
                 {
                     foreach (var zombie in mapData.inactive)
                     {
-                        gr.FillRectangle(Brushes.White, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
+                        gr.FillRectangle(Brushes.DarkRed, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
                         // gr.FillEllipse(Brushes.Red, Scale(zombie.x), Scale(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
                     }
                 }

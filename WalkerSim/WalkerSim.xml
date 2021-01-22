@@ -38,7 +38,7 @@
 	Some examples (https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population_density):
 	Increasing the population density will also make the game a lot harder, be careful here.
 	-->
-  <PopulationDensity>120</PopulationDensity>
+  <PopulationDensity>30</PopulationDensity>
 
   <!--
 	Enables the view server allowing the WalkerSimViewer to connect and inspect the entire simulation.
