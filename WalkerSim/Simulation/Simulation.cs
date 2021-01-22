@@ -1034,8 +1034,8 @@ namespace WalkerSim
             if (now < _nextBroadcast)
                 return;
 
-            // Broadcast only with 20hz. // Override 4Hz
-            _nextBroadcast = now.AddMilliseconds(1.0f / 4.0f);
+            // Broadcast only with 20hz. // Override 2Hz
+            _nextBroadcast = now.AddMilliseconds(1.0f / 2.0f);
 
             try
             {
