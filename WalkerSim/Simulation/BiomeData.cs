@@ -14,6 +14,7 @@ namespace WalkerSim
 		{
 			var world = GameManager.Instance.World;
 
+			HashSet<string> entityClassNames = new HashSet<string>();
 			foreach (var pair in world.Biomes.GetBiomeMap())
 			{
 				var biome = pair.Value;
@@ -24,18 +25,28 @@ namespace WalkerSim
 					continue;
 				}
 
-				// Clearing the biome data prevents random zombie spawns
-				// We make a copy to keep for ourselves for the simulation.
-				var copy = new BiomeSpawnEntityGroupList();
-				copy.list = new List<BiomeSpawnEntityGroupData>(biomeSpawnEntityGroupList.list);
+                // Clearing the biome data prevents random zombie spawns
+                // We make a copy to keep for ourselves for the simulation.
+                var copy = new BiomeSpawnEntityGroupList {
+                    list = new List<BiomeSpawnEntityGroupData>(biomeSpawnEntityGroupList.list)
+                };
 
-				if (clearOriginal)
+                if (clearOriginal)
 				{
 					biomeSpawnEntityGroupList.list.Clear();
 				}
 
+				Log.Out("[WalkerSim] Biome: {0}, Adding Entity Groups: {1}", biome.m_sBiomeName, string.Join(", ", copy.list.ConvertAll(e => e.entityGroupRefName)));
+                foreach (var egName in copy.list.ConvertAll(e => e.entityGroupRefName)) {
+					foreach (var id in EntityGroups.list[egName].ConvertAll(e => e.entityClassId)) {
+						entityClassNames.Add(EntityClass.list[id].entityClassName);
+					}
+				}
+				
+					
 				list.Add(biome.m_sBiomeName, copy);
 			}
+			Log.Out("[WalkerSim] Spawnable Entity Class Names: {0}", string.Join(", ", entityClassNames));
 		}
 
 		public int GetZombieClass(World world, Chunk chunk, int x, int y, PRNG prng)
