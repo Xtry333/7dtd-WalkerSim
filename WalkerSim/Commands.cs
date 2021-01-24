@@ -62,7 +62,7 @@ namespace WalkerSim
         }
 
         public override string GetHelp() {
-            return "walkersim <params>\n reset => Clear and repopulate simulation\n timescale => Change timescale of simulation\n pausewithoutplayers => Change timescale of simulation";
+            return "walkersim <params>\n reset => Clear and repopulate simulation\n timescale => Change timescale of simulation\n walkspeedscale => Change walkspeedscale of zombies";
         }
     }
 }

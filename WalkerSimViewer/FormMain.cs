@@ -85,7 +85,7 @@ namespace WalkerSim
                 {
                     foreach (var zombie in active.list)
                     {
-                        gr.FillEllipse(Brushes.Blue, ScaleCoord(zombie.x), ScaleCoord(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
+                        gr.FillEllipse(Brushes.Red, ScaleCoord(zombie.x), ScaleCoord(zombie.y), ZOMBIE_SIZE, ZOMBIE_SIZE);
                     }
                 }
 
@@ -234,7 +234,11 @@ namespace WalkerSim
         }
 
         private void SaveLastIP(string host, int port) {
-            File.WriteAllText("lastip", $"{host}:{port}");
+            try {
+                File.WriteAllText("lastip", $"{host}:{port}");
+            } catch {
+                return;
+            }
         }
 
         private void OnFormLoad(object sender, EventArgs e) {
