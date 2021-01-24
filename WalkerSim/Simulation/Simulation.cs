@@ -83,9 +83,7 @@ namespace WalkerSim
             float lenX = _worldMins.x < 0 ? _worldMaxs.x + Math.Abs(_worldMins.x) : _worldMaxs.x - Math.Abs(_worldMins.x);
             float lenY = _worldMins.z < 0 ? _worldMaxs.z + Math.Abs(_worldMins.z) : _worldMaxs.x - Math.Abs(_worldMins.z);
 
-            float squareKm = (lenX / 1000.0f) * (lenY / 1000.0f);
-            float populationSize = squareKm * _config.PopulationDensity;
-            _maxZombies = (int)Math.Floor(populationSize);
+            _maxZombies = CalculateMaxZombies();
 
             Log.Out("Simulation File: {0}", SimulationFile);
             Log.Out("World X: {0}, World Y: {1}, {2}, {3}", lenX, lenY, _worldMins, _worldMaxs);
@@ -110,6 +108,15 @@ namespace WalkerSim
             _worker.DoWork += BackgroundUpdate;
 
             Log.Out("[WalkerSim] Initialized");
+        }
+
+        private int CalculateMaxZombies() {
+            float lenX = _worldMins.x < 0 ? _worldMaxs.x + Math.Abs(_worldMins.x) : _worldMaxs.x - Math.Abs(_worldMins.x);
+            float lenY = _worldMins.z < 0 ? _worldMaxs.z + Math.Abs(_worldMins.z) : _worldMaxs.x - Math.Abs(_worldMins.z);
+
+            float squareKm = (lenX / 1000.0f) * (lenY / 1000.0f);
+            float populationSize = squareKm * _config.PopulationDensity;
+            return (int)Math.Floor(populationSize);
         }
 
         public void SetTimeScale(float scale)
@@ -257,7 +264,7 @@ namespace WalkerSim
             return true;
         }
 
-        public void Reset()
+        public void Reset(bool fromBorders = false)
         {
             var world = GameManager.Instance.World;
 
@@ -282,20 +289,21 @@ namespace WalkerSim
                 _inactiveZombies.Clear();
 
                 // Populate
-                CreateInactiveRoaming();
+                _maxZombies = CalculateMaxZombies();
+                CreateInactiveRoaming(fromBorders);
             }
 
             _nextSave = DateTime.Now.AddMinutes(5);
         }
 
-        private void CreateInactiveRoaming()
+        private void CreateInactiveRoaming(bool fromBorders)
         {
             int maxZombies = _maxZombies;
             int numCreated = 0;
 
             while (_inactiveZombies.Count < maxZombies)
             {
-                CreateInactiveZombie(true);
+                CreateInactiveZombie(!fromBorders);
                 numCreated++;
             }
 
@@ -1034,8 +1042,8 @@ namespace WalkerSim
             if (now < _nextBroadcast)
                 return;
 
-            // Broadcast only with 20hz. // Override 2Hz
-            _nextBroadcast = now.AddMilliseconds(1.0f / 2.0f);
+            // Broadcast only with 20hz. // Override 1Hz
+            _nextBroadcast = now.AddMilliseconds(1000);
 
             try
             {
@@ -1104,6 +1112,16 @@ namespace WalkerSim
                     Radius = radius,
                 });
             }
+        }
+
+        public void SetPauseWithoutPlayers(bool flag) {
+            Log.Out($"Simulation without players: {(flag ? "Paused" : "Unpaused")}");
+            _config.PauseWithoutPlayers = flag;
+        }
+
+        public void SetPopulationDensity(int density) {
+            Log.Out($"Density: {density}/km2");
+            _config.PopulationDensity = density;
         }
     }
 }

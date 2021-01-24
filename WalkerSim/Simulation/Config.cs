@@ -11,12 +11,12 @@ namespace WalkerSim
     public class Config : IEquatable<Config>
     {
         public int UpdateInterval { get; private set; }
-        public bool PauseWithoutPlayers { get; private set; }
+        public bool PauseWithoutPlayers { get; set; }
         public int SpinupTicks { get; private set; }
         public bool Persistent { get; private set; }
         public int WorldZoneDivider { get; private set; }
         public float POITravellerChance { get; private set; }
-        public int PopulationDensity { get; private set; }
+        public int PopulationDensity { get; set; }
         public bool IncludeSleepers { get; private set; }
         public float MaxSleepers { get; private set; }
         public bool EnableViewServer { get; private set; }
@@ -157,5 +157,6 @@ namespace WalkerSim
                     break;
             }
         }
+
     }
 }
