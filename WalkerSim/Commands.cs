@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace WalkerSim {
-    public class CommandWalkerSim : ConsoleCmdAbstract {
-        public override void Execute(List<string> _params, CommandSenderInfo _senderInfo) {
-            try {
+namespace WalkerSim
+{
+    public class CommandWalkerSim : ConsoleCmdAbstract
+    {
+        public override void Execute(List<string> _params, CommandSenderInfo _senderInfo)
+        {
+            try
+            {
                 if (_params.Count < 1)
                     return;
 
@@ -15,46 +16,39 @@ namespace WalkerSim {
                 if (sim == null)
                     return;
 
-                switch (_params[0]) {
-                    case "respawn":
+                switch (_params[0])
+                {
                     case "reset":
-                        if (_params.Count < 2) {
-                            sim.Reset();
-                        } else {
-                            if (bool.TryParse(_params[1], out bool flag)) {
-                                sim.Reset(flag);
-                            }
-                        }
-                        break;
-                    case "pausewithoutplayers":
-                        if (_params.Count < 2) {
-                            Log.Out("Missing parameter: <bool>");
-                        } else {
-                            if (bool.TryParse(_params[1], out bool flag)) {
-                                sim.SetPauseWithoutPlayers(flag);
-                            }
-                        }
-                        break;
-                    case "density":
-                        if (_params.Count < 2) {
-                            Log.Out("Missing parameter: <density>");
-                        } else {
-                            if (int.TryParse(_params[1], out int density)) {
-                                sim.SetPopulationDensity(density);
-                            }
-                        }
+                        sim.Reset();
                         break;
                     case "timescale":
-                        if (_params.Count < 2) {
+                        if (_params.Count < 2)
                             Log.Out("Missing parameter: <scale>");
-                        } else {
-                            if (float.TryParse(_params[1], out float scale)) {
+                        else
+                        {
+                            float scale = 1.0f;
+                            if (float.TryParse(_params[1], out scale))
+                            {
                                 sim.SetTimeScale(scale);
                             }
                         }
                         break;
+                    case "walkspeedscale":
+                        if (_params.Count < 2)
+                            Log.Out("Missing parameter: <walkspeedscale>");
+                        else
+                        {
+                            float scale = 1.0f;
+                            if (float.TryParse(_params[1], out scale))
+                            {
+                                sim.SetWalkSpeedScale(scale);
+                            }
+                        }
+                        break;
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Log.Out("Exception: {0}", e.Message);
             }
         }
